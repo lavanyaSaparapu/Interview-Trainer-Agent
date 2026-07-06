@@ -1,0 +1,163 @@
+[
+  {
+    "role": "Software Engineer",
+    "category": "Technical",
+    "question": "Explain the difference between a process and a thread.",
+    "model_answer": "A process is an independent program in execution with its own memory space. A thread is a unit of execution within a process, sharing the same memory. Threads are lighter and faster to create, while processes provide stronger isolation. Use threads for concurrent tasks within an app; use processes for isolated workloads.",
+    "tips": "Mention context switching cost, deadlock risks with threads, and use cases like web servers."
+  },
+  {
+    "role": "Software Engineer",
+    "category": "Technical",
+    "question": "What is the time complexity of QuickSort and when does it degrade?",
+    "model_answer": "QuickSort has an average time complexity of O(n log n). It degrades to O(n²) in the worst case when the pivot is always the smallest or largest element (e.g., already sorted arrays with naive pivot selection). Using randomized or median-of-three pivot selection avoids this.",
+    "tips": "Always mention best, average, and worst cases. Comparing with MergeSort shows depth."
+  },
+  {
+    "role": "Software Engineer",
+    "category": "Behavioral",
+    "question": "Describe a time you debugged a difficult production issue.",
+    "model_answer": "In my previous role, a microservice intermittently returned 500 errors. I used structured logging and distributed tracing (Jaeger) to isolate the failing service. The root cause was a database connection pool exhaustion under load. I increased pool size, added retry logic, and set alerts to catch recurrence.",
+    "tips": "Use the STAR method: Situation, Task, Action, Result. Quantify the impact of your fix."
+  },
+  {
+    "role": "Software Engineer",
+    "category": "System Design",
+    "question": "How would you design a URL shortening service?",
+    "model_answer": "Key components: (1) Hash generation — use base62 encoding of an auto-incremented ID or MD5 truncated. (2) Storage — a key-value store like Redis for fast reads; a relational DB for persistence. (3) Redirect — 301 (permanent) vs 302 (temporary) redirect. (4) Scale — use consistent hashing for distributed cache, CDN for static redirects. Handle collisions and expiry policies.",
+    "tips": "Discuss trade-offs: 301 reduces server load but breaks analytics; 302 tracks every click."
+  },
+  {
+    "role": "Data Scientist",
+    "category": "Technical",
+    "question": "What is the bias-variance trade-off?",
+    "model_answer": "Bias is error from overly simplistic assumptions; high bias causes underfitting. Variance is error from sensitivity to fluctuations in training data; high variance causes overfitting. The trade-off means reducing one tends to increase the other. Regularization, cross-validation, and ensemble methods help find the right balance.",
+    "tips": "Draw the U-shaped total error curve mentally. Mention techniques like L1/L2 regularization."
+  },
+  {
+    "role": "Data Scientist",
+    "category": "Technical",
+    "question": "Explain how gradient boosting works.",
+    "model_answer": "Gradient boosting builds an ensemble of weak learners (decision trees) sequentially. Each new tree fits the residual errors (negative gradient of the loss function) of the combined ensemble so far. The final prediction is a weighted sum of all trees. XGBoost and LightGBM are popular optimized implementations.",
+    "tips": "Contrast with Random Forest (parallel trees vs sequential). Mention learning rate and n_estimators."
+  },
+  {
+    "role": "Data Scientist",
+    "category": "Behavioral",
+    "question": "Tell me about a project where your model did not perform as expected.",
+    "model_answer": "I built a churn prediction model that achieved 92% accuracy but failed in production. The dataset was highly imbalanced (5% churn). High accuracy masked poor recall on the minority class. I switched to F1-score as the optimization metric, applied SMOTE for oversampling, and retrained — improving recall from 30% to 71%.",
+    "tips": "This question tests your ability to self-correct. Emphasize the lesson learned and metric choice."
+  },
+  {
+    "role": "Frontend Developer",
+    "category": "Technical",
+    "question": "What is the virtual DOM and why does React use it?",
+    "model_answer": "The virtual DOM is a lightweight in-memory representation of the real DOM. React uses it to batch and minimize direct DOM manipulations, which are expensive. When state changes, React diffs the new virtual DOM against the previous one (reconciliation) and applies only the minimal set of changes to the real DOM, improving performance.",
+    "tips": "Mention the reconciliation algorithm, fiber architecture in React 16+, and keys in lists."
+  },
+  {
+    "role": "Frontend Developer",
+    "category": "Technical",
+    "question": "Explain CSS specificity and how conflicts are resolved.",
+    "model_answer": "CSS specificity is a weight system: inline styles (1000) > IDs (100) > classes/attributes/pseudo-classes (10) > elements/pseudo-elements (1). When two rules conflict, the higher specificity wins. Equal specificity: last declaration wins (cascade). !important overrides all but should be avoided.",
+    "tips": "Give a concrete example with numbers. Mention the BEM naming convention as a way to avoid specificity wars."
+  },
+  {
+    "role": "Frontend Developer",
+    "category": "Behavioral",
+    "question": "How do you handle cross-browser compatibility issues?",
+    "model_answer": "I start by using CSS resets or Normalize.css. I test on BrowserStack or Sauce Labs across major browsers. I use feature detection with Modernizr or native CSS @supports. For JS, I use Babel for transpilation and Polyfill.io for missing APIs. I also check caniuse.com before using new features.",
+    "tips": "Mention progressive enhancement vs graceful degradation as philosophies."
+  },
+  {
+    "role": "Backend Developer",
+    "category": "Technical",
+    "question": "What is the difference between REST and GraphQL?",
+    "model_answer": "REST uses fixed endpoints per resource; clients get the full response shape defined by the server. GraphQL uses a single endpoint; clients specify exactly what data they need, avoiding over-fetching and under-fetching. GraphQL suits complex, interconnected data; REST is simpler for straightforward CRUD. REST has better caching out of the box.",
+    "tips": "Discuss N+1 query problems in GraphQL and solutions like DataLoader."
+  },
+  {
+    "role": "Backend Developer",
+    "category": "Technical",
+    "question": "Explain database indexing and when it can hurt performance.",
+    "model_answer": "Indexes speed up SELECT queries by creating a sorted data structure (B-tree by default) on a column. However, they slow down INSERT, UPDATE, and DELETE because the index must be updated. Too many indexes waste disk space and memory. Composite indexes help multi-column queries but must match the query's column order.",
+    "tips": "Mention EXPLAIN/ANALYZE to inspect query plans. Covering indexes, partial indexes are bonus points."
+  },
+  {
+    "role": "DevOps Engineer",
+    "category": "Technical",
+    "question": "What is the difference between Docker and a virtual machine?",
+    "model_answer": "VMs emulate full hardware via a hypervisor; each VM has its own OS kernel — heavy but strongly isolated. Docker containers share the host OS kernel; they are lightweight, start in milliseconds, and use less memory. The trade-off is weaker isolation. Use containers for microservices; VMs for strict multi-tenant security boundaries.",
+    "tips": "Mention container runtimes (containerd, runc), namespaces, and cgroups as the underlying Linux primitives."
+  },
+  {
+    "role": "DevOps Engineer",
+    "category": "Technical",
+    "question": "Explain a CI/CD pipeline you have built.",
+    "model_answer": "I built a pipeline in GitHub Actions: (1) Code push triggers lint + unit tests. (2) On passing, Docker image is built and pushed to ECR. (3) Staging deploy via Helm to Kubernetes. (4) Smoke tests run. (5) Manual approval gate. (6) Production deploy with a rolling update strategy. Rollback is automatic if health checks fail.",
+    "tips": "Describe the stages clearly. Mention deployment strategies: rolling, blue-green, canary."
+  },
+  {
+    "role": "Machine Learning Engineer",
+    "category": "Technical",
+    "question": "How do you prevent overfitting in a deep learning model?",
+    "model_answer": "Key techniques: (1) Dropout — randomly deactivates neurons during training. (2) L1/L2 regularization — penalizes large weights. (3) Data augmentation — artificially increases training data. (4) Early stopping — halt when validation loss stops improving. (5) Batch normalization — stabilizes and speeds training. (6) Reduce model complexity if data is limited.",
+    "tips": "Mention that the best cure is more data. Cross-validation helps detect overfitting early."
+  },
+  {
+    "role": "Machine Learning Engineer",
+    "category": "System Design",
+    "question": "How would you deploy a machine learning model to production?",
+    "model_answer": "Steps: (1) Serialize model (pickle, ONNX, SavedModel). (2) Wrap in a REST API (FastAPI/Flask). (3) Containerize with Docker. (4) Deploy to Kubernetes or serverless (AWS Lambda). (5) Set up a model registry (MLflow). (6) Monitor for data drift and performance degradation. (7) Automate retraining pipelines.",
+    "tips": "Discuss A/B testing models in production, shadow mode deployment, and rollback strategies."
+  },
+  {
+    "role": "Product Manager",
+    "category": "Behavioral",
+    "question": "How do you prioritize features when everything seems urgent?",
+    "model_answer": "I use a combination of frameworks: (1) RICE scoring — Reach × Impact × Confidence / Effort. (2) MoSCoW — Must have, Should have, Could have, Won't have. I align with stakeholders on strategic goals first, then score features objectively. I also distinguish between customer pain vs revenue impact and communicate trade-offs clearly.",
+    "tips": "Show you use data + frameworks, not just gut feel. Mention aligning with company OKRs."
+  },
+  {
+    "role": "Product Manager",
+    "category": "Behavioral",
+    "question": "Tell me about a product you launched and its outcome.",
+    "model_answer": "I led the launch of a self-serve onboarding flow that reduced time-to-first-value from 14 days to 3 days. We ran A/B tests on two variants, selected the winner based on 7-day activation rate, then rolled out to all users. Result: 22% increase in trial-to-paid conversion. Post-launch, I tracked NPS and churned-user interviews to identify next improvements.",
+    "tips": "Use numbers. Show the full loop: idea → build → measure → iterate."
+  },
+  {
+    "role": "General / HR",
+    "category": "HR",
+    "question": "Tell me about yourself.",
+    "model_answer": "Structure: Present → Past → Future. 'I am a [role] with X years of experience in [domain]. Currently I [current work/project]. Before this, I [key achievement]. I am looking to [future goal aligned with this company].' Keep it under 2 minutes. Tailor the story to the company's needs.",
+    "tips": "Do not read your resume aloud. This is your elevator pitch — make it memorable and relevant."
+  },
+  {
+    "role": "General / HR",
+    "category": "HR",
+    "question": "Where do you see yourself in 5 years?",
+    "model_answer": "I aim to grow into a [senior/lead/expert] role in [domain], deepening expertise in [skill] and eventually leading a team or driving product decisions. I want to contribute meaningfully to a company that values [innovation/impact/growth]. I see this role as an ideal stepping stone because [specific reason tied to the company].",
+    "tips": "Show ambition but remain realistic. Tie your answer to the company's growth. Avoid 'in your seat' jokes."
+  },
+  {
+    "role": "General / HR",
+    "category": "HR",
+    "question": "What is your greatest weakness?",
+    "model_answer": "I tend to over-engineer solutions early on, spending too much time on edge cases before validating the core idea. I have been actively working on this by timeboxing design phases and shipping MVPs earlier for feedback. This has helped me ship faster and still deliver quality where it matters.",
+    "tips": "Choose a real weakness. Show self-awareness AND active improvement. Never say 'I'm a perfectionist.'"
+  },
+  {
+    "role": "Cybersecurity Analyst",
+    "category": "Technical",
+    "question": "What is the difference between symmetric and asymmetric encryption?",
+    "model_answer": "Symmetric encryption uses the same key for encryption and decryption (e.g., AES). It is fast but requires secure key exchange. Asymmetric encryption uses a key pair — public key encrypts, private key decrypts (e.g., RSA). It solves key distribution but is slower. In practice, TLS uses asymmetric to exchange a symmetric session key.",
+    "tips": "Mention AES-256 as the gold standard symmetric cipher. RSA-2048/4096 for asymmetric. Explain hybrid encryption."
+  },
+  {
+    "role": "Cybersecurity Analyst",
+    "category": "Technical",
+    "question": "Explain SQL injection and how to prevent it.",
+    "model_answer": "SQL injection occurs when user input is concatenated directly into a SQL query, allowing attackers to manipulate the query logic (e.g., ' OR '1'='1). Prevention: (1) Parameterized queries / prepared statements. (2) ORM frameworks. (3) Input validation and allowlisting. (4) Least-privilege DB accounts. (5) WAF as a defense-in-depth layer.",
+    "tips": "Give a code example of a vulnerable vs safe query. Mention OWASP Top 10 — SQL injection is always in it."
+  }
+]
