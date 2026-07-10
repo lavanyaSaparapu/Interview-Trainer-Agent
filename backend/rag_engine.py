@@ -40,7 +40,7 @@ def _build_index(corpus: list[dict]):
 
     credentials = Credentials(url=WATSONX_URL, api_key=WATSONX_API_KEY)
     client = Embeddings(
-        model_id="ibm/slate-125m-english-rtrvr",
+        model_id="ibm/slate-125m-english-rtrvr-v2",
         credentials=credentials,
         project_id=WATSONX_PROJECT_ID
     )

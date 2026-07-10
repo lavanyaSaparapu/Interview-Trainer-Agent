@@ -17,7 +17,7 @@ WATSONX_API_KEY = os.getenv("WATSONX_API_KEY", "")
 WATSONX_PROJECT_ID = os.getenv("WATSONX_PROJECT_ID", "")
 
 # IBM Granite model ID supported on watsonx.ai
-MODEL_ID = "ibm/granite-13b-chat-v2"
+MODEL_ID = "ibm/granite-8b-code-instruct"
 
 _client = None
 
