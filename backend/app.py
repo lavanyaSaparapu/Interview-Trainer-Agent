@@ -37,6 +37,38 @@ def health():
     return jsonify({"status": "ok", "service": "Interview Trainer Agent"})
 
 
+@app.get("/api/test_key")
+def test_key():
+    url = os.getenv("WATSONX_URL", "https://us-south.ml.cloud.ibm.com")
+    key = os.getenv("WATSONX_API_KEY", "")
+    project_id = os.getenv("WATSONX_PROJECT_ID", "")
+    
+    masked_key = f"{key[:3]}...{key[-3:]}" if len(key) > 6 else "Too Short"
+    
+    try:
+        from ibm_watsonx_ai import Credentials
+        from ibm_watsonx_ai.foundation_models import ModelInference
+        credentials = Credentials(url=url, api_key=key)
+        model = ModelInference(
+            model_id="ibm/granite-8b-code-instruct",
+            credentials=credentials,
+            project_id=project_id
+        )
+        res = model.generate_text(prompt="Say hi in 1 word")
+        status = f"Success! Response: {res.strip()}"
+    except Exception as e:
+        status = f"Failed! Error: {e}"
+        
+    return jsonify({
+        "url": url,
+        "key_length": len(key),
+        "masked_key": masked_key,
+        "project_id": project_id,
+        "status": status
+    })
+
+
+
 # ---------------------------------------------------------------------------
 # GET /api/roles  — return unique roles from the corpus
 # ---------------------------------------------------------------------------
