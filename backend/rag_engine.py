@@ -32,7 +32,7 @@ def _build_index(corpus: list[dict]):
     from ibm_watsonx_ai.foundation_models import Embeddings
 
     WATSONX_URL = os.getenv("WATSONX_URL", "https://us-south.ml.cloud.ibm.com")
-    WATSONX_API_KEY = os.getenv("WATSONX_API_KEY", "")
+    WATSONX_API_KEY = os.getenv("WATSONX_API_KEY") or os.getenv("WATSONX_API_kEY") or ""
     WATSONX_PROJECT_ID = os.getenv("WATSONX_PROJECT_ID", "")
 
     if not WATSONX_API_KEY or not WATSONX_PROJECT_ID:
@@ -70,7 +70,7 @@ def retrieve(query: str, top_k: int = 5) -> list[dict]:
     if not corpus:
         return []
 
-    WATSONX_API_KEY = os.getenv("WATSONX_API_KEY", "")
+    WATSONX_API_KEY = os.getenv("WATSONX_API_KEY") or os.getenv("WATSONX_API_kEY") or ""
     WATSONX_PROJECT_ID = os.getenv("WATSONX_PROJECT_ID", "")
 
     # Fallback: if credentials are not configured, run in Demo Mode

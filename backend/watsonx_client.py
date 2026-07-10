@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 WATSONX_URL = os.getenv("WATSONX_URL", "https://us-south.ml.cloud.ibm.com")
-WATSONX_API_KEY = os.getenv("WATSONX_API_KEY", "")
+WATSONX_API_KEY = os.getenv("WATSONX_API_KEY") or os.getenv("WATSONX_API_kEY") or ""
 WATSONX_PROJECT_ID = os.getenv("WATSONX_PROJECT_ID", "")
 
 # IBM Granite model ID supported on watsonx.ai
