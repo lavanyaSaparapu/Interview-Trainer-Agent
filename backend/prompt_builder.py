@@ -53,11 +53,11 @@ def build_feedback_prompt(
     rag_context: list[dict],
 ) -> str:
     """
-    Build a prompt asking Granite to evaluate and improve a candidate's answer.
+    Build a prompt asking Granite to analyze and improve a candidate's answer.
     """
     context_block = _format_context(rag_context[:2])
 
-    prompt = f"""System: You are an expert interview coach providing constructive, honest, and encouraging feedback on a candidate's answer.
+    prompt = f"""System: You are an AI writing assistant helping a student improve their interview communication. Your task is to analyze the candidate's response to the interview question compared to the reference model answer, and provide helpful learning feedback.
 
 User: Role: {role}
 Interview Question: {question}
@@ -67,29 +67,45 @@ Reference model answer for calibration:
 {context_block}
 
 Please provide:
-1. **Score** (out of 10) with a brief justification
-2. **Strengths** — what was done well (2-3 points)
-3. **Improvements** — specific, actionable suggestions (2-3 points)
-4. **Revised Answer** — a polished version of the candidate's answer
+1. **Rating** (a number from 1 to 10 indicating how closely it aligns with the model answer key)
+2. **Strengths** (positive points)
+3. **Key Suggestions** (specific ways to make the answer more professional)
+4. **Suggested Polish** (a revised version of their answer)
 
 Assistant:"""
 
     return prompt
 
 
-def build_chat_prompt(user_message: str, rag_context: list[dict]) -> str:
+def build_chat_prompt(user_message: str, history: list[dict], rag_context: list[dict]) -> str:
     """
     Build a general conversational prompt with RAG context for free-form
     interview questions (e.g. 'What questions do companies ask for ML roles?').
+    Includes conversation history to maintain context.
     """
     context_block = _format_context(rag_context)
 
-    prompt = f"""System: You are a helpful, knowledgeable interview preparation assistant. You help candidates prepare for job interviews by providing guidance, sample questions, and coaching tips. Use the provided reference material to ground your answers.
+    # Build conversation history block
+    history_turns = []
+    if history:
+        for turn in history[:-1]:  # Exclude the latest user message which is appended at the end
+            role = "User" if turn.get("role") == "user" else "Assistant"
+            text = turn.get("text", "")
+            if text:
+                history_turns.append(f"{role}: {text}")
+            
+    history_block = "\n".join(history_turns) if history_turns else "(No previous history)"
 
-User: {user_message}
+    prompt = f"""System: You are a helpful, knowledgeable interview preparation assistant. You help candidates prepare for job interviews by providing guidance, sample questions, and coaching tips. Use the provided reference material to ground your answers.
 
 Relevant reference material:
 {context_block}
+
+--- CONVERSATION HISTORY ---
+{history_block}
+--- END HISTORY ---
+
+User: {user_message}
 
 Assistant:"""
 

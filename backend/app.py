@@ -140,12 +140,13 @@ def chat():
     """
     data = request.get_json(force=True) or {}
     message = data.get("message", "").strip()
+    history = data.get("history", [])
 
     if not message:
         return jsonify({"error": "Field 'message' is required."}), 400
 
     context = retrieve(message, top_k=4)
-    prompt = build_chat_prompt(message, context)
+    prompt = build_chat_prompt(message, history, context)
     response = generate_response(prompt, max_new_tokens=600)
 
     return jsonify({"reply": response})

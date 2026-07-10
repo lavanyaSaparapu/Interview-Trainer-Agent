@@ -857,6 +857,7 @@
   const chatMessages = document.getElementById("chat-messages");
   const chatInput = document.getElementById("chat-input");
   const btnChat = document.getElementById("btn-chat");
+  let chatHistory = [];
 
   function appendMsg(text, type) {
     const div = document.createElement("div");
@@ -878,17 +879,34 @@
     chatInput.value = "";
     btnChat.disabled = true;
     appendMsg(message, "user");
+    
+    // Add user message to history and keep last 6 turns
+    chatHistory.push({ role: "user", text: message });
+    if (chatHistory.length > 8) {
+      chatHistory.shift();
+    }
+    
     const thinking = appendMsg("Thinking…", "thinking");
 
     try {
       const res = await fetch(API + "/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message })
+        body: JSON.stringify({ message, history: chatHistory })
       });
       const data = await res.json();
       thinking.remove();
-      appendMsg(data.reply || data.error || "No response.", "bot");
+      
+      const reply = data.reply || data.error || "No response.";
+      appendMsg(reply, "bot");
+      
+      // Save bot reply to history
+      if (data.reply) {
+        chatHistory.push({ role: "bot", text: data.reply });
+        if (chatHistory.length > 8) {
+          chatHistory.shift();
+        }
+      }
     } catch (e) {
       thinking.remove();
       appendMsg("Could not reach backend. Make sure app.py is running on port 5000.", "bot");
