@@ -37,6 +37,41 @@ def health():
     return jsonify({"status": "ok", "service": "Interview Trainer Agent"})
 
 
+@app.get("/api/test_rag")
+def test_rag():
+    import traceback
+    steps = {}
+    try:
+        steps["1. import numpy"] = "attempting..."
+        import numpy as np
+        steps["1. import numpy"] = f"Success! version={np.__version__}"
+        
+        steps["2. import faiss"] = "attempting..."
+        import faiss
+        steps["2. import faiss"] = "Success!"
+        
+        steps["3. run retrieve"] = "attempting..."
+        from rag_engine import retrieve
+        res = retrieve("ml engineer", top_k=1)
+        steps["3. run retrieve"] = f"Success! retrieved {len(res)} entries"
+        
+        steps["4. generate response"] = "attempting..."
+        from watsonx_client import generate_response
+        ans = generate_response("Say hi in 1 word")
+        steps["4. generate response"] = f"Success! response={ans}"
+        
+        status = "All steps completed successfully!"
+    except Exception as e:
+        status = f"Failed! Error: {e}"
+        steps["traceback"] = traceback.format_exc()
+        
+    return jsonify({
+        "status": status,
+        "steps": steps
+    })
+
+
+
 
 
 # ---------------------------------------------------------------------------
