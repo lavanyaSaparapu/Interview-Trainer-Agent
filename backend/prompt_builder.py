@@ -15,10 +15,9 @@ def build_question_prompt(
     """
     context_block = _format_context(rag_context)
 
-    prompt = f"""<|system|>
-You are an expert interview coach. Your job is to generate a set of tailored interview questions for a candidate, along with model answers and personalised improvement tips. Be specific, practical, and encouraging.
-<|user|>
-Generate a personalised interview preparation plan for the following candidate:
+    prompt = f"""System: You are an expert interview coach. Your job is to generate a set of tailored interview questions for a candidate, along with model answers and personalised improvement tips. Be specific, practical, and encouraging.
+
+User: Generate a personalised interview preparation plan for the following candidate:
 
 - Job Role: {role}
 - Experience Level: {experience}
@@ -41,7 +40,8 @@ Format each question as:
 **Tip:** <tip>
 
 After all 5 questions, add a short "Overall Preparation Strategy" section (3-4 bullet points).
-<|assistant|>"""
+
+Assistant:"""
 
     return prompt
 
@@ -57,10 +57,9 @@ def build_feedback_prompt(
     """
     context_block = _format_context(rag_context[:2])
 
-    prompt = f"""<|system|>
-You are an expert interview coach providing constructive, honest, and encouraging feedback on a candidate's answer.
-<|user|>
-Role: {role}
+    prompt = f"""System: You are an expert interview coach providing constructive, honest, and encouraging feedback on a candidate's answer.
+
+User: Role: {role}
 Interview Question: {question}
 Candidate's Answer: {user_answer}
 
@@ -72,7 +71,8 @@ Please provide:
 2. **Strengths** — what was done well (2-3 points)
 3. **Improvements** — specific, actionable suggestions (2-3 points)
 4. **Revised Answer** — a polished version of the candidate's answer
-<|assistant|>"""
+
+Assistant:"""
 
     return prompt
 
@@ -84,14 +84,14 @@ def build_chat_prompt(user_message: str, rag_context: list[dict]) -> str:
     """
     context_block = _format_context(rag_context)
 
-    prompt = f"""<|system|>
-You are a helpful, knowledgeable interview preparation assistant. You help candidates prepare for job interviews by providing guidance, sample questions, and coaching tips. Use the provided reference material to ground your answers.
-<|user|>
-{user_message}
+    prompt = f"""System: You are a helpful, knowledgeable interview preparation assistant. You help candidates prepare for job interviews by providing guidance, sample questions, and coaching tips. Use the provided reference material to ground your answers.
+
+User: {user_message}
 
 Relevant reference material:
 {context_block}
-<|assistant|>"""
+
+Assistant:"""
 
     return prompt
 
